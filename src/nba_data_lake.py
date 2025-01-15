@@ -9,15 +9,15 @@ from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 # Load environment variables from .env file to keep sensitive information secure
 load_dotenv()
 
-# AWS configurations
-region = "us-east-1"  # Replace with your preferred AWS region
-bucket_name = "sports-analytics-data-lake"  # Change to a unique S3 bucket name
-glue_database_name = "glue_nba_data_lake"  # Glue database for data lake
-athena_output_location = f"s3://{bucket_name}/athena-results/"  # Athena query results
+# AWS configurations (loaded from .env)
+region = os.getenv("AWS_REGION")  # Default to "us-east-1" if not provided
+bucket_name = os.getenv("S3_BUCKET_NAME")  # Default bucket name
+glue_database_name = os.getenv("GLUE_DATABASE_NAME")  # Default Glue database name
+athena_output_location = f"s3://{bucket_name}/athena-results/"  # Construct Athena output location based on bucket
 
-# Sportsdata.io configurations (loaded from .env file for security)
-api_key = os.getenv("SPORTS_DATA_API_KEY")  # API key for Sportsdata.io
-nba_endpoint = os.getenv("NBA_ENDPOINT")  # NBA API endpoint
+# Sportsdata.io configurations (loaded from .env)
+api_key = os.getenv("SPORTS_DATA_API_KEY")  # Get API key from .env
+nba_endpoint = os.getenv("NBA_ENDPOINT")  # Get NBA endpoint from .env
 
 # Create AWS service clients for S3, Glue, and Athena
 s3_client = boto3.client("s3", region_name=region)
